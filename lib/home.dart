@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:multi_lang/control_panel.dart';
 import 'package:multi_lang/loacl/local.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -11,13 +12,11 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late FlutterLocalization _flutterLocalization;
-  late String _currentLocal;
 
   @override
   void initState() {
     super.initState();
     _flutterLocalization = FlutterLocalization.instance;
-    _currentLocal = _flutterLocalization.currentLocale!.languageCode;
   }
 
   @override
@@ -27,42 +26,42 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Text(
           LocalData.title.getString(context),
         ),
-        actions: [
-          DropdownButton(
-            value: _currentLocal,
-            items: const [
-              DropdownMenuItem(value: 'en', child: Text('English')),
-              DropdownMenuItem(value: 'de', child: Text('German')),
-              DropdownMenuItem(value: 'vi', child: Text('VietNam')),
-            ],
-            onChanged: (value) {
-              setState(() {
-                _setLocal(value);
-              });
-            },
-          )
-        ],
       ),
       body: Center(
         child: Column(
           children: [
-            const SizedBox(
-              height: 100,
-            ),
-            Text(
-              context.formatString(LocalData.body, ["hello"]),
+            const SizedBox(height: 100),
+            Text(context.formatString(LocalData.body, ["hello"])),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _flutterLocalization.translate("vi");
+                });
+              },
+              child: Text('VI'),
             ),
             TextButton(
-              onPressed: () {},
-              child: const Text("VI"),
+              onPressed: () {
+                _flutterLocalization.translate("en");
+              },
+              child: Text('EN'),
             ),
             TextButton(
-              onPressed: () {},
-              child: const Text("EN"),
+              onPressed: () {
+                _flutterLocalization.translate("de");
+              },
+              child: Text('DE'),
             ),
             TextButton(
-              onPressed: () {},
-              child: const Text("DE"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ControlPanelScreen(),
+                  ),
+                );
+              },
+              child: const Text("Next Screen"),
             ),
           ],
         ),
@@ -70,17 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  void _setLocal(String? value) {
+  void _setLocale(String? value) {
     if (value == null) return;
-    if (value == 'en') {
-      _flutterLocalization.translate('en');
-    } else if (value == 'de') {
-      _flutterLocalization.translate('de');
-    } else {
-      _flutterLocalization.translate('vi');
-    }
-    setState(() {
-      _currentLocal = value;
-    });
+    _flutterLocalization.translate(value);
   }
 }
