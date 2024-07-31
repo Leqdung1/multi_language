@@ -31,26 +31,31 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Column(
           children: [
             const SizedBox(height: 100),
-            Text(context.formatString(LocalData.body, ["hello"])),
+            Text(
+              context.formatString(
+                LocalData.body,
+                ["hello"],
+              ),
+            ),
             TextButton(
               onPressed: () {
                 setState(() {
                   _flutterLocalization.translate("vi");
                 });
               },
-              child: Text('VI'),
+              child: const Text('VI'),
             ),
             TextButton(
               onPressed: () {
                 _flutterLocalization.translate("en");
               },
-              child: Text('EN'),
+              child: const Text('EN'),
             ),
             TextButton(
               onPressed: () {
                 _flutterLocalization.translate("de");
               },
-              child: Text('DE'),
+              child: const Text('DE'),
             ),
             TextButton(
               onPressed: () {
@@ -67,10 +72,5 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
-  }
-
-  void _setLocale(String? value) {
-    if (value == null) return;
-    _flutterLocalization.translate(value);
   }
 }
